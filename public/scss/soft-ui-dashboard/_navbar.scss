@@ -2,11 +2,11 @@
   box-shadow: $navbar-box-shadow;
 
   .navbar-brand {
-    color: $dark;
+    color: $white;
     @include font-size($font-size-sm);
   }
   .nav-link {
-    color: $dark;
+    color: $white;
     padding: $navbar-nav-link-padding;
     font-weight: $font-weight-normal;
     font-size: $font-size-sm;
@@ -146,7 +146,7 @@
         background: $white;
         .nav-link,
         i {
-          color: $dark;
+          color: $white;
         }
       }
     }

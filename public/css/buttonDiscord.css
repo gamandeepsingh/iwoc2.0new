@@ -48,7 +48,7 @@
 .guidebutton,
 .sponsorbutton {
     --text-stroke-color: rgba(255, 255, 255, 1);
-    --animation-color: #2AAEE3;
+    --animation-color: #ACAEFE;
     letter-spacing: 3px;
     text-decoration: none;
     font-size: var(--fs-size);

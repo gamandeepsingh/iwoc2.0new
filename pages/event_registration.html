@@ -11,6 +11,7 @@
   <link rel="icon" type="image/x-icon" href="../public/img/iwoc_final_comp-min.png" />
   <title>IWoC Event Registration Form</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="../public/css/click-snow.css">
 
 </head>
 <style>
@@ -144,11 +145,12 @@ select option {
 }
 </style>
 
+<script type="text/javascript" src="https://storage.yandexcloud.net/slaylines/uploads/snowflakes.min.1.0.0.js" defer></script>
 <body>
   <!-- particles.js container -->
-  <div id="particles-js"></div>
+  <!-- <div id="particles-js"></div> -->
 
-  <div class="dialogCard disabled" id="dialogCard">
+  <div class="dialogCard disabled" id="dialogCard" >
     <div class="dialogTools" onclick="hide()">
       <div class="dialogCircle">
         <span class="dred dBox"></span>
@@ -194,11 +196,11 @@ select option {
     <div class="form">
       <div class="w-10/12 sm:w-9/12 md:w-9/12 lg:w-7/12 mx-auto">
         <form class="sm:w-2/3 w-full px-4 lg:px-0 mx-auto" onsubmit="return validateForm(event)" id="reg" name="regi-form">
-          <a href="/"><img src="/public/img/iwoc_logo.png" class="w-2/3 ml-auto mr-auto" /></a>
+          <a href="/"><img  src="/public/img/Season_2/5-removebg-preview (1).png" class="w-full ml-auto mr-auto  overflow-hidden object-contain h-[200px] scale-[1.2] lg:scale-[2] md:scale-[1.5] sm:scale-[1.4]" /></a>
 
 
           <br />
-          <div class="formbox">
+          <div class="formbox" >
             <div class="p-10 rounded-lg formBackground">
               <h1 class="text-gray-700 text-center lg:text-2xl md:text-xl sm:text-lg">
                 <span id="form-head"> <strong>Event Registration Form</strong></span>
@@ -284,10 +286,11 @@ select option {
     </div>
   </div>
 
-  <script src="../public/js/particles.js"></script>
-  <script src="../public/js/particle.js"></script>
+  <!-- <script src="../public/js/particles.js"></script>
+  <script src="../public/js/particle.js"></script> -->
   <script src="../public/js/event_registration.js"></script>
   <script src="/public/js/form.js"></script>
+  <script src="../public/js/snowflakes.js"></script>
 </body>
 
 </html>
