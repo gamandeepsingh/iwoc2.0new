@@ -1,15 +1,12 @@
 const {Octokit} = require('octokit');
 const Project = require('./project');
-const mongoose = require('mongoose');
 require('dotenv').config();
 
 const octokit = new Octokit({auth:process.env.GIT_TOKEN});
 
-const addProject = async function (data){
-
+const addProject = async (data) => {
     let ownerId = "",repoName = "";
     const repo = data.repoUrl.split("/");
-  
     if(repo[0] == "https:" || repo[0] == "http:"){
       ownerId = repo[3];
       repoName = repo[4];
@@ -18,17 +15,12 @@ const addProject = async function (data){
       ownerId = repo[1];
       repoName = repo[2];
     }
-    
-    console.log(ownerId,repoName);
     const resp = await octokit.request('GET /repos/{owner}/{repo}', {
       owner: ownerId,
       repo: repoName
-    })
+    });
   
-    //console.log(resp);
-    
     let projects = await Project.findOne({projectId: resp.data.id});
-    console.log(projects);
     if(projects == null){
       await Project.create({
         projectId: 0,
@@ -61,7 +53,6 @@ const addProject = async function (data){
     }
 
     projects = await Project.find({projectId: resp.data.id});
-    console.log(projects);
-  }
+  };
 
 module.exports = {addProject};

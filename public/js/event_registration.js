@@ -114,7 +114,7 @@ async function validateForm(e){
             phone: phone_val,
             residence: residence_val,
         }
-        await fetch("/eventRegister", {
+        await fetch("/eventRegistration", {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

@@ -7,6 +7,11 @@ const adminSchema = new mongoose.Schema({
     email: String,
     sessionid: String,
     hash: String,
+    role: {
+        type: String,
+        enum: ['admin', 'member'],
+        required: true
+      }
 });
 
 const Admin = new mongoose.model('Admin', adminSchema);

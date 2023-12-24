@@ -1,18 +1,18 @@
 const AdminBro = require("admin-bro");
 const AdminBroExpressjs = require("@admin-bro/express");
 const AdminBroMongoose = require("@admin-bro/mongoose");
-const mongoose = require("mongoose");
+
 const project = require("../config/project");
 const user = require("../config/user");
 const eventregistrations = require("../config/event");
-const admins = require("../config/admins");
+const admin = require("../config/admin");
 
 AdminBro.registerAdapter(AdminBroMongoose);
 
 const canModifyUsers = ({ currentAdmin }) =>
   currentAdmin && currentAdmin.role === "admin";
 
-const canEditEmp = ({ currentAdmin, record }) => {
+const canEditEmp = ({ currentAdmin }) => {
   return currentAdmin && currentAdmin.role === "admin";
 };
 
@@ -65,7 +65,7 @@ const AdminBroOptions = {
         },
       },
     {
-      resource: admins,
+      resource: admin,
       options: {
         properties: {
           encryptedPassword: { isVisible: false },
@@ -107,9 +107,9 @@ const AdminBroOptions = {
 const adminBro = new AdminBro(AdminBroOptions);
 const router = AdminBroExpressjs.buildAuthenticatedRouter(adminBro, {
   authenticate: async (email, password) => {
-    const user = await admins.findOne({ email });
+    const user = await admin.findOne({ email });
     if (user) {
-      if (password === user.encryptedPassword) {
+      if (password === user.hash) {
         return user;
       }
     }
