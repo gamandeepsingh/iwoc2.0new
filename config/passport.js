@@ -61,7 +61,6 @@ const verifyCallback = (email, password, done) => {
 
             if (!admin) { return done(null, false) }
 
-            //Comparing provided plaintext password and saved password hash
             const isValid = bcrypt.compareSync(password, admin.hash);
 
             if (isValid) {

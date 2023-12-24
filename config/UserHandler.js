@@ -1,50 +1,16 @@
 const { Octokit } = require('octokit');
 const User = require('./user');
+const Event = require("./event");
 require('dotenv').config();
 
 const octokit = new Octokit({ auth: process.env.GIT_TOKEN });
 
 let resp, profile;
 
-async function addUser(data) {
-
-    resp = { status: 200, id: 5, title: "❌Error", message: "Try contacting team." };
-
-    await fetchProfile(data);
-
-    if (resp.status == 404)
-        return resp;
-
-    const userGit = await User.findOne({ userid: profile.data.id });
-    const userLib = await User.findOne({ libid: data.libid.trim() });
-
-    if (userGit || userLib) {
-        console.log("User exists");
-        resp = {
-            status: 409,
-            id: 2,
-            title: "✔User already exists!",
-            message: "Try contacting team if you think this is a mistake."
-        }
-    }
-    else {
-        await enterUser(data);
-    }
-
-    // console.log(user);
-
-    console.log("Response", resp);
-
-
-    return resp;
-}
-
-async function fetchProfile(data) {
+const fetchProfile = async (data) => {
     try {
         profile = await octokit.request('GET /users/{username}', { username: data.git });
-        console.log(profile);
     } catch (e) {
-        console.log(e);
         resp = {
             status: 404,
             id: 4,
@@ -52,11 +18,9 @@ async function fetchProfile(data) {
             message: "Please check your github username."
         }
     }
-    console.log("Profile Fetched")
-}
+};
 
-async function enterUser(data){
-
+const enterUser = async (data) => {
     try{
         await User.create({
             name: data.name.trim(),
@@ -75,16 +39,13 @@ async function enterUser(data){
             followers: profile.data.followers,
             following: profile.data.following
         });
-
-        console.log("User added");
         resp = {
             status: 200,
             id: 1,
-            title: "✔Registration Successfull!",
+            title: "✅Registration Successfull!",
             message: "Let's make this winter hot!🔥"
         }
-    }catch(e){
-        console.log(e);
+    } catch(e){
         resp = {
             status: 409,
             id: 3,
@@ -92,7 +53,65 @@ async function enterUser(data){
             message: "Try contacting team."
         }
     }
-}
+};
 
-module.exports = { addUser };
+const addUser = async (data) => {
+    resp = { status: 200, id: 5, title: "❌Error", message: "Try contacting team." };
+    await fetchProfile(data);
+    if (resp.status == 404)return resp;
+    const userGit = await User.findOne({ userid: profile.data.id });
+    const userLib = await User.findOne({ libid: data.libid.trim() });
+    if (userGit || userLib) {
+        resp = {
+            status: 409,
+            id: 2,
+            title: "❌User already exists!",
+            message: "Try contacting team if you think this is a mistake."
+        }
+    }
+    else await enterUser(data);
+    return resp;
+};
 
+const enterEventUser = async (data) => {
+    try{
+        await Event.create({
+            name: data.name.trim(),
+            email: data.email.trim(),
+            libid: data.libid.trim(),
+            phone: data.phone.trim(),
+            residence: data.residence.trim(),
+        });
+        resp = {
+            status: 200,
+            id: 1,
+            title: "✅Registration Successfull!",
+            message: "Let's make this winter hot!🔥"
+        }
+    } catch(e){
+        resp = {
+            status: 409,
+            id: 3,
+            title: "❌Internal Error Occured",
+            message: "Try contacting team."
+        }
+    }
+};
+
+const addUserEvent = async (data) => {
+    const userEmail = await Event.findOne({ email: data.email.trim() });
+    const userLib = await Event.findOne({ libid: data.libid.trim() });
+    const userPhone = await Event.findOne({ phone: data.phone.trim() });
+    if (userEmail || userLib || userPhone) {
+        resp = {
+            status: 409,
+            id: 2,
+            title: "❌User already exists!",
+            message: "Try contacting team if you think this is a mistake."
+        }
+    }
+    else await enterEventUser(data);
+    return resp;
+};
+
+module.exports = { addUser, addUserEvent };
