@@ -10,6 +10,7 @@
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(3.1px);
     -webkit-backdrop-filter: blur(3.1px);
+    gap: 30px;
 }
 
 @media only screen and (min-width: 720px) {
@@ -199,6 +200,36 @@
     }
 }
 
+@media only screen and (max-width:700px) {
+    #about{
+        margin-left: 4vw;
+    }   
+}
+@media only screen and (max-width:500px) {
+     #about{
+        margin-left: 0;
+     }
+     .cardContainer{
+        transform: scale(0.8);
+        right: -3rem !important;
+    }   
+    .cardContainer2{
+         transform: scale(0.8);
+        }
+    .contri-card{
+        right: -4rem !important;
+    }
+    .regis-card{
+        right: 13.2rem !important;
+    }
+    .about-cap-img{  
+        transform: scale(0.8) rotate(-13deg) !important;
+        left: -4rem !important;
+        top: -5rem !important;
+     }
+}
+
+
 .box-container{
     position: relative;
 
@@ -333,13 +364,14 @@
     /* width: fit-content; */
     
     position: absolute;
-    bottom: -1rem;
+    /* bottom: -4rem; */
+    top: -6rem;
+    right: -5rem;
     overflow: hidden;
     width: 200px;
     height: 200px;
     border-radius: 50%;
     background-size: cover;
-    left: -1rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -392,68 +424,47 @@
     transition: all 1s;
   }
   
-  .cardContainer:hover::before {
+   .cardContainer:hover::before {
     transform: translate(-30px, 30px);
-  }
-  
-  /* .contibution-card-abt1 {
-    width: 150px;
-    height: 150px;
-    background-image: linear-gradient(163deg, #00ff75 0%, #3700ff 100%);
-    border-radius: 50%;
-    transition: all .3s;
-    border-radius: 50%;
    }
-   
-   .contibution-card-abt1 .card2 {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    transition: all .2s;
-   }
-   
-   .contibution-card-abt1 .card2:hover {
-    transform: scale(0.98);
-   }
-   
-   .contibution-card-abt1 .card:hover {
-    box-shadow: 0px 0px 30px 1px rgba(0, 255, 117, 0.30);
-   }
-
-
-
-   .contibution-card-abt2 {
-    width: 150px;
-    height: 150px;
-    background-image: linear-gradient(163deg, #00ff75 0%, #3700ff 100%);
-    border-radius: 50%;
-    transition: all .3s;
-    border-radius: 50%;
-   }
-   
-   .contibution-card-abt2 .card2 {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    background-color: #1a1a1a;
-    transition: all .2s;
-   }
-   
-   .contibution-card-abt2 .card2:hover {
-    transform: scale(0.98);
-   }
-   
-   .contibution-card-abt2 .card:hover {
-    box-shadow: 0px 0px 30px 1px rgba(0, 255, 117, 0.30);
-   } */
+    
    .card-abt{
     bottom: -10%;
     justify-content: space-evenly;
    }
+
+   .cardContainer2{
+        width: 200px;
+        height: 200px;
+   }
+
+   .contri-card{
+        position: absolute;
+        top: 3rem;
+        right: -8rem;
+   }
+
+   .regis-card{
+        top: 11.5rem;
+        right: -6rem;
+   }
+
    @media  (max-width:500px) {
-       .card-abt{
+    .contri-card{
+        right: -5rem;
+        top: 12rem;
+    }
+    
+    
+    .regis-card{
+        /* bottom: -3rem; */
+        top: 12rem ;
+        right: 14rem;
+    }
+    
+    .card-abt{
         bottom: -5%;
         justify-content: space-between;
-       }
+    }
     
    }
