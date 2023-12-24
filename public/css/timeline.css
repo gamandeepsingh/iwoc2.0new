@@ -19,6 +19,10 @@
 Main components 
 
 -------------------------------- */
+#timeline{
+  margin-top: 10%
+}
+
 #cd-timeline {
   position: relative;
   padding: 2em 0;
@@ -133,10 +137,28 @@ Main components
   width: calc(50% - 2px);
   display: inline-block;
 }
+
+@media (max-width: 720px){
+  #timeline{
+    margin-top: 25%;
+  }
+} 
 @media (max-width: 500px) {
   .cd-timeline-content .timeline-content-info .timeline-content-info-title, .cd-timeline-content .timeline-content-info .timeline-content-info-date {
     display: block;
     width: 100%;
+  }
+  #timeline{
+    margin-top: 37%;
+  }
+}
+@media (max-width: 350px) {
+  .cd-timeline-content .timeline-content-info .timeline-content-info-title, .cd-timeline-content .timeline-content-info .timeline-content-info-date {
+    display: block;
+    width: 100%;
+  }
+  #timeline{
+    margin-top: 65%;
   }
 }
 .cd-timeline-content .content-skills {
