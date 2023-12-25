@@ -29,7 +29,7 @@
   .IconContainer {
     width: 60px;
     height: 60px;
-    background: linear-gradient(to bottom, #ACAEFE,rgb(172, 70, 255));
+    background: linear-gradient(to top, #889ee7,rgb(70, 73, 255));
     border-radius: 50%;
     display: flex;
     align-items: center;
