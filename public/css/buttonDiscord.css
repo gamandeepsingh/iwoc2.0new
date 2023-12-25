@@ -4,6 +4,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 20px;
     --fs-size: 1.5em;
     --border-right: 4px;
 }
@@ -11,8 +12,80 @@
 .guidebutton {
     display: none;
 }
+.bookmarkBtn {
+    width: 200px;
+    height: 80px;
+    border-radius: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.349);
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition-duration: .3s;
+    overflow: hidden;
+  }
+  
+  .IconContainer {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(to top, #889ee7,rgb(70, 73, 255));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    z-index: 2;
+    transition-duration: .3s;
+  }
+  
+  .icon-btn {
+    border-radius: 1px;
+  }
+  
+  .text-btn {
+    height: 100%;
+    width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    z-index: 1;
+    transition-duration: .3s;
+    font-size: 1.04em;
+    margin-top: 1rem;
+  }
+  
+  .bookmarkBtn:hover .IconContainer {
+    width: 170px;
+    border-radius: 40px;
+    transition-duration: .3s;
+  }
+  
+  .bookmarkBtn:hover .text-btn {
+    transform: translate(10px);
+    width: 0;
+    font-size: 0;
+    transition-duration: .3s;
+  }
+  
+  .bookmarkBtn:active {
+    transform: scale(0.95);
+    transition-duration: .3s;
+  }
+ 
+  
 
+@media only screen and (max-width:699.9px) {
+    .discord-btn-1{
+      scale:0;
+      display: none;
+    }
+    .bookmarkBtn:nth-child(2){
+        scale: 0.8;
 
+    }
+}
 
 @media only screen and (min-width: 720px) {
     .twobuttons {

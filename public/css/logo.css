@@ -1,7 +1,7 @@
 
 .mainlogo{
     width: 50%;
-    margin-top: 25%;
+    margin-top: 10%;
     margin-bottom: 5%;
     z-index: -1;
 }
@@ -70,6 +70,10 @@
     .fancy-border2{
     height: 200px;
     width: 200px;
+    }
+    .mainlogo{
+        scale: 1.3;
+        margin-top: 6em;
     }
 }
 @media only screen and (min-width: 720px){
