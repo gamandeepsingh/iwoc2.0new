@@ -6,25 +6,25 @@ const MongoStore = require('connect-mongo');
 const adminrouter = require('./routes/app.router');
 require('dotenv').config();
 
-require('./config/passport')    
+// require('./config/passport')    
 const routes = require('./routes');
 
 const app = express();
-mongoose.connect(process.env.DB_STRING, () => { console.log("Connected to MongoDB.") });     
+// mongoose.connect(process.env.DB_STRING, () => { console.log("Connected to MongoDB.") });     
 
 
 // Session Store for storing session data by express-sessions
 
 // ************************ for initial purpose
-const sessionStore = MongoStore.create({           
-  mongoUrl: process.env.DB_STRING,
-  collection: "sessions",
-});
+// const sessionStore = MongoStore.create({           
+//   mongoUrl: process.env.DB_STRING,
+//   collection: "sessions",
+// });
 // ***************************
 
 
 // Compulsory Middlewares
-app.use('/admin',adminrouter); //Admin route   
+// app.use('/admin',adminrouter); //Admin route   
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use('/public',express.static(__dirname + '/public'));    //If static files does not load try: app.use(express.static('public'));
@@ -33,20 +33,20 @@ app.use('/public',express.static(__dirname + '/public'));    //If static files d
 // Session Middleware
 
 // *******************************************
-app.use(session({
-    secret: process.env.SECRET_KEY,
-    resave: false,
-    saveUninitialized: false,
-    store: sessionStore,
-    autoRemove: 'native',
-    cookie: {
-        maxAge: 1000 * 60 * 60 * 24, // 1-Day
-        name: 'login'
-    }
-}))
+// app.use(session({
+//     secret: process.env.SECRET_KEY,
+//     resave: false,
+//     saveUninitialized: false,
+//     store: sessionStore,
+//     autoRemove: 'native',
+//     cookie: {
+//         maxAge: 1000 * 60 * 60 * 24, // 1-Day
+//         name: 'login'
+//     }
+// }))
 
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 // ************************************************
 
