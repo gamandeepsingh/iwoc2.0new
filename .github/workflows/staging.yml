@@ -2,21 +2,11 @@ name: staging
 on:
   push:
     branches:
-      - staging
+      - testing
 jobs:
-  Build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18.10
-      - run: npm i
-      - run: npm run build
 
   deploy:
-    needs : Build
-    name: Deploy
+    name: Deploy staging
     runs-on: ubuntu-latest
     steps:
       - name: Deploy
@@ -25,9 +15,9 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
-          port: ${{ secrets.PORT }}
           script: |
-                  cd staging
+                  cd iwoc2.0
+                  git checkout testing
                   git pull
                   npm install
                   pm2 restart dev
