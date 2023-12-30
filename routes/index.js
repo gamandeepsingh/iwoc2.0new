@@ -189,7 +189,7 @@ router.get("/auth/github", (req, res, next) => next(),
   passport.authenticate("github", { scope: ["user:email"] })
 );
 
-router.get("/auth/github/callback",
+router.get("/auth/github/callback/",
   passport.authenticate("github", { failureRedirect: "/login" }),
   async function (req, res) {
     const user = await User.findById(req.session.passport.user);
