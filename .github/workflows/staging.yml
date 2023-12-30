@@ -20,4 +20,4 @@ jobs:
                   git checkout testing
                   git pull
                   npm install
-                  pm2 restart dev
+                  pm2 restart test
