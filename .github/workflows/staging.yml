@@ -18,5 +18,4 @@ jobs:
           script: |
                   cd test
                   git pull
-                  npm install
                   pm2 restart test

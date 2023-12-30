@@ -18,5 +18,4 @@ jobs:
           script: |
                   cd iwoc2.0
                   git pull
-                  npm install
                   pm2 restart dev
