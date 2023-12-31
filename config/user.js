@@ -36,7 +36,7 @@ const scoreSchema = new mongoose.Schema({
 const userSchema = new mongoose.Schema({
     name: String,
     email: String,
-    libid: String,
+    // libid: String,
     phone: String,
     userid: String,
     displayname: String,

@@ -14,7 +14,7 @@ const validateData = async (data) => {
   if (data.name == '' || data.name == null || regExp.test(data.name)) return false;
   var chkExp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   if (data.email == '' || data.email == null || !chkExp.test(data.email)) return false;
-  if (data.libid == '' || data.libid == null)  return false;
+  // if (data.libid == '' || data.libid == null)  return false;
   regExp = /[a-zA-Z]/g;
   if (data.phone == '' || data.phone == null || regExp.test(data.phone) || data.phone.length != 10) return false;
   if (data.git == '' || data.git == null) return false;
@@ -34,7 +34,7 @@ router.get("/", (req, res) => {
 
 const Registered = async (id) => {
   const user = await User.findById(id);
-  if (user.libid) return true;
+  if (user.email) return true;
   return false;
 }
 
