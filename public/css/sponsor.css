@@ -7,6 +7,13 @@
   /* body {
     background-color: #0000006b;
   } */
+  .iosc_logo{
+    transition: all ease 0.3s ;
+  }
+  .iosc_logo:hover{
+    scale: 1.2;
+
+  }
   .ag-courses_box {
     display: -webkit-box;
     display: -ms-flexbox;
