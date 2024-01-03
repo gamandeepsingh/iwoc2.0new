@@ -3,10 +3,11 @@ on:
   push:
     branches:
       - testing
+      - testing
 jobs:
 
   deploy:
-    name: Deploy dev
+    name: Deploy staging
     runs-on: ubuntu-latest
     steps:
       - name: Deploy

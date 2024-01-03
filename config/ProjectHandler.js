@@ -39,7 +39,7 @@ const addProject = async (data) => {
             ownerName: data.name,
             ownerEmail: data.email,
             ownerPhone: data.phone,
-            ownerLib: data.libid,
+            // ownerLib: data.libid,
             ownerId: resp.data.owner.id,
             ownerUsername: resp.data.owner.login,
             avatar_url: resp.data.owner.avatar_url,

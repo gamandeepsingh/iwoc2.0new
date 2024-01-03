@@ -25,7 +25,7 @@ const enterUser = async (data) => {
         await User.create({
             name: data.name.trim(),
             email: data.email.trim(),
-            libid: data.libid.trim(),
+            // libid: data.libid.trim(),
             phone: data.phone.trim(),
             userid: profile.data.id,
             displayname: profile.data.name,
@@ -60,8 +60,10 @@ const addUser = async (data) => {
     await fetchProfile(data);
     if (resp.status == 404)return resp;
     const userGit = await User.findOne({ userid: profile.data.id });
-    const userLib = await User.findOne({ libid: data.libid.trim() });
-    if (userGit || userLib) {
+    const email = await User.findOne({ email: data.email });
+    const phone = await User.findOne({ phone: data.phone });
+    // const userLib = await User.findOne({ libid: data.libid.trim() });
+    if (userGit || email || phone) {
         resp = {
             status: 409,
             id: 2,
@@ -78,7 +80,7 @@ const enterEventUser = async (data) => {
         await Event.create({
             name: data.name.trim(),
             email: data.email.trim(),
-            libid: data.libid.trim(),
+            // libid: data.libid.trim(),
             phone: data.phone.trim(),
             residence: data.residence.trim(),
         });
@@ -100,9 +102,9 @@ const enterEventUser = async (data) => {
 
 const addUserEvent = async (data) => {
     const userEmail = await Event.findOne({ email: data.email.trim() });
-    const userLib = await Event.findOne({ libid: data.libid.trim() });
+    // const userLib = await Event.findOne({ libid: data.libid.trim() });
     const userPhone = await Event.findOne({ phone: data.phone.trim() });
-    if (userEmail || userLib || userPhone) {
+    if (userEmail || userPhone) {
         resp = {
             status: 409,
             id: 2,
