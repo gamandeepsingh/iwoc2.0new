@@ -78,32 +78,37 @@ router.post("/register",
 
 router.get("/login",
   async (req, res, next) => {
+    // console.log("login - ", req.session.passport, await Exists(req.session.passport.user));
     if (req.session.passport && (await Exists(req.session.passport.user))) next();
     else res.sendFile(path.join(__dirname, "../pages/login.html"));
   },
   async (req, res, next) => {
+    // console.log("login second - ", await Registered(req.session.passport.user));
     if (await Registered(req.session.passport.user)) res.redirect("/dashboard");
     else next();
   },
   (req, res, next) => {
+    // console.log("inside lofign");
     res.sendFile(path.join(__dirname, "../pages/login.html"));
   }
 );
 
 router.get("/dashboard",
   async (req, res, next) => {
-    console.log("inside dashboard = ", req.session.passport, await Exists(req.session.passport.user));
-    if (req.session.passport && (await Registered(req.session.passport.user))) next();
+    // console.log("inside dashboard = ", req.session.passport, await Exists(req.session.passport.user));
+    if (req.session.passport && (await Exists(req.session.passport.user))) next();
     else res.redirect("/login");
   }, 
   async (req, res, next) => {
+    // console.log("inside next 1 of dashboard", await Registered(req.session.passport.user));
     if (await Registered(req.session.passport.user)) next();
     else{
       await User.deleteOne({_id:req.session.passport.user});
-      res.redirect("/unauthenticated");
+      res.redirect("/unauthenticated"); 
     } 
   },
   async (req, res, next) => {
+    // console.log("inside next 2 of dashboard");
     const user = await User.findById(req.session.passport.user);
     res.render("dashboard", { user: user });
   }
@@ -223,7 +228,7 @@ router.get('/auth/github/callback',
       // Successful authentication logic
       async function sample() {
             const user = await User.findById(req.session.passport.user);
-            console.log(user)
+            // console.log(user)
             const d = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
             user.sessions.push({ sessionid: req.sessionID, date: d });
             await user.save();
