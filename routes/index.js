@@ -34,13 +34,24 @@ router.get("/", (req, res) => {
 
 const Registered = async (id) => {
   const user = await User.findById(id);
-  if (user.libid) return true;
+  console.log("inside registerdd = ", user);
+  if (user.email) return true;
   return false;
+}
+
+async function Exists(id) {
+  const user = await User.findById(id);
+  if (user !== null)
+      return true;
+
+  return false;
+  // const admin = await Admin.findById(id);
+  // return admin !== null;
 }
 
 router.get("/register",
   async (req, res, next) => {
-    if (req.session.passport && (await Registered(req.session.passport.user))) next();
+    if (req.session.passport && (await Exists(req.session.passport.user))) next();
     else res.sendFile(path.join(__dirname, "../pages/form.html"));
   },
   async (req, res, next) => {
@@ -67,7 +78,7 @@ router.post("/register",
 
 router.get("/login",
   async (req, res, next) => {
-    if (req.session.passport && (await Registered(req.session.passport.user))) next();
+    if (req.session.passport && (await Exists(req.session.passport.user))) next();
     else res.sendFile(path.join(__dirname, "../pages/login.html"));
   },
   async (req, res, next) => {
@@ -81,6 +92,7 @@ router.get("/login",
 
 router.get("/dashboard",
   async (req, res, next) => {
+    console.log("inside dashboard = ", req.session.passport, await Exists(req.session.passport.user));
     if (req.session.passport && (await Registered(req.session.passport.user))) next();
     else res.redirect("/login");
   }, 
@@ -99,7 +111,7 @@ router.get("/dashboard",
 
 router.get("/dashboard/leaderboard",
   async (req, res, next) => {
-    if (req.session.passport && (await Registered(req.session.passport.user))) next();
+    if (req.session.passport && (await Exists(req.session.passport.user))) next();
     else res.redirect("/login");
   },
   async (req, res, next) => {
@@ -189,16 +201,37 @@ router.get("/auth/github", (req, res, next) => next(),
   passport.authenticate("github", { scope: ["user:email"] })
 );
 
-router.get("/auth/github/callback",
-  passport.authenticate("github", { failureRedirect: "/login" }),
-  async function (req, res) {
-    const user = await User.findById(req.session.passport.user);
-    const d = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
-    user.sessions.push({ sessionid: req.sessionID, date: d });
-    await user.save();
-    res.redirect("/dashboard");
-  }
-);
+// router.get("/auth/github/callback",
+//   passport.authenticate("github", { failureRedirect: "/login" }),
+//   async function (req, res) {
+//     const user = await User.findById(req.session.passport.user);
+//     const d = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
+//     user.sessions.push({ sessionid: req.sessionID, date: d });
+//     await user.save();
+//     res.redirect("/dashboard");
+//   }
+// );
+
+router.get('/auth/github/callback',
+  (req, res, next) => {
+    passport.authenticate('github', { failureRedirect: '/login' })(req, res, (err) => {
+      if (err) {
+        // Log the failure reason
+        console.error('Authentication failed:', err.message);
+        return res.redirect('/failure?reason=' + encodeURIComponent(err.message));
+      }
+      // Successful authentication logic
+      async function sample() {
+            const user = await User.findById(req.session.passport.user);
+            console.log(user)
+            const d = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
+            user.sessions.push({ sessionid: req.sessionID, date: d });
+            await user.save();
+            res.redirect("/dashboard");
+          }
+      sample();
+    });
+  });
 
 // // ***********************----------------------------***************************************
 
