@@ -34,19 +34,14 @@ router.get("/", (req, res) => {
 
 const Registered = async (id) => {
   const user = await User.findById(id);
-  console.log("inside registerdd = ", user);
   if (user.email) return true;
   return false;
 }
 
-async function Exists(id) {
+const Exists = async (id) => {
   const user = await User.findById(id);
-  if (user !== null)
-      return true;
-
+  if (user !== null) return true;
   return false;
-  // const admin = await Admin.findById(id);
-  // return admin !== null;
 }
 
 router.get("/register",
@@ -78,29 +73,24 @@ router.post("/register",
 
 router.get("/login",
   async (req, res, next) => {
-    // console.log("login - ", req.session.passport, await Exists(req.session.passport.user));
     if (req.session.passport && (await Exists(req.session.passport.user))) next();
     else res.sendFile(path.join(__dirname, "../pages/login.html"));
   },
   async (req, res, next) => {
-    // console.log("login second - ", await Registered(req.session.passport.user));
     if (await Registered(req.session.passport.user)) res.redirect("/dashboard");
     else next();
   },
   (req, res, next) => {
-    // console.log("inside lofign");
     res.sendFile(path.join(__dirname, "../pages/login.html"));
   }
 );
 
 router.get("/dashboard",
   async (req, res, next) => {
-    // console.log("inside dashboard = ", req.session.passport, await Exists(req.session.passport.user));
     if (req.session.passport && (await Exists(req.session.passport.user))) next();
     else res.redirect("/login");
   }, 
   async (req, res, next) => {
-    // console.log("inside next 1 of dashboard", await Registered(req.session.passport.user));
     if (await Registered(req.session.passport.user)) next();
     else{
       await User.deleteOne({_id:req.session.passport.user});
@@ -108,7 +98,6 @@ router.get("/dashboard",
     } 
   },
   async (req, res, next) => {
-    // console.log("inside next 2 of dashboard");
     const user = await User.findById(req.session.passport.user);
     res.render("dashboard", { user: user });
   }
@@ -177,25 +166,28 @@ router.post("/eventRegistration",
 
 // // ************************ PROJECT RELATED ROUTES *********************************
 
-router.get("/projects", async (req, res, next) => {
-  const projects = await Project.find();
-  res.render("project", {project : projects});
-});
 
-router.post("/register-project",
-  async (req, res, next) => {
-    await ProjectHandler.addProject(req.body);
-  }, (req, res) => {
-    res.send("Done");
-  }
-);
+// NOT NEEDEN IN IWOC 2.0 AS THIS TIME WE HAVE CONTACTED THEM PERSONALLY AND ADDED THEM USING PROJECT TRACKER SCRIPT
 
-// OR
+// router.get("/projecs", async (req, res, next) => {
+//   const projects = await Project.find();
+//   res.render("project", {project : projects});
+// });
 
-router.get("/submit-project", (req, res) => {
-    res.redirect("https://forms.gle/zhrY8EvbFZCty1tw9");
-  }
-);
+// router.post("/register-project",
+//   async (req, res, next) => {
+//     await ProjectHandler.addProject(req.body);
+//   }, (req, res) => {
+//     res.send("Done");
+//   }
+// );
+
+// // OR
+
+// router.get("/submit-project", (req, res) => {
+//     res.redirect("https://forms.gle/zhrY8EvbFZCty1tw9");
+//   }
+// );
 
 // // ************************ ---------------------- *********************************
 
@@ -206,35 +198,22 @@ router.get("/auth/github", (req, res, next) => next(),
   passport.authenticate("github", { scope: ["user:email"] })
 );
 
-// router.get("/auth/github/callback",
-//   passport.authenticate("github", { failureRedirect: "/login" }),
-//   async function (req, res) {
-//     const user = await User.findById(req.session.passport.user);
-//     const d = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
-//     user.sessions.push({ sessionid: req.sessionID, date: d });
-//     await user.save();
-//     res.redirect("/dashboard");
-//   }
-// );
-
 router.get('/auth/github/callback',
   (req, res, next) => {
     passport.authenticate('github', { failureRedirect: '/login' })(req, res, (err) => {
       if (err) {
         // Log the failure reason
-        console.error('Authentication failed:', err.message);
         return res.redirect('/failure?reason=' + encodeURIComponent(err.message));
       }
       // Successful authentication logic
-      async function sample() {
+      async function success() {
             const user = await User.findById(req.session.passport.user);
-            // console.log(user)
             const d = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
             user.sessions.push({ sessionid: req.sessionID, date: d });
             await user.save();
             res.redirect("/dashboard");
           }
-      sample();
+      success();
     });
   });
 
