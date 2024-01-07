@@ -167,12 +167,12 @@ router.post("/eventRegistration",
 // // ************************ PROJECT RELATED ROUTES *********************************
 
 
-// NOT NEEDEN IN IWOC 2.0 AS THIS TIME WE HAVE CONTACTED THEM PERSONALLY AND ADDED THEM USING PROJECT TRACKER SCRIPT
+router.get("/projecs", async (req, res, next) => {
+  const projects = await Project.find();
+  res.render("project", {project : projects});
+});
 
-// router.get("/projecs", async (req, res, next) => {
-//   const projects = await Project.find();
-//   res.render("project", {project : projects});
-// });
+// NOT NEEDEN IN IWOC 2.0 AS THIS TIME WE HAVE CONTACTED THEM PERSONALLY AND ADDED THEM USING PROJECT TRACKER SCRIPT
 
 // router.post("/register-project",
 //   async (req, res, next) => {
