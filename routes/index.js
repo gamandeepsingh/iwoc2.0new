@@ -167,7 +167,7 @@ router.post("/eventRegistration",
 // // ************************ PROJECT RELATED ROUTES *********************************
 
 
-router.get("/projecs", async (req, res, next) => {
+router.get("/projects", async (req, res, next) => {
   const projects = await Project.find();
   res.render("project", {project : projects});
 });
