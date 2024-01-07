@@ -160,10 +160,10 @@ router.get("/", (req, res) => {
 
 // // ************************ PROJECT RELATED ROUTES *********************************
 
-// router.get("/projects", async (req, res, next) => {
-//   const projects = await Project.find();
-//   res.render("project", {project : projects});
-// });
+router.get("/projects", async (req, res, next) => {
+  const projects = await Project.find();
+  res.render("project", {project : projects});
+});
 
 // router.post("/register-project",
 //   async (req, res, next) => {
