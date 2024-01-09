@@ -34,13 +34,19 @@ router.get("/", (req, res) => {
 
 const Registered = async (id) => {
   const user = await User.findById(id);
-  if (user.libid) return true;
+  if (user.email) return true;
+  return false;
+}
+
+const Exists = async (id) => {
+  const user = await User.findById(id);
+  if (user !== null) return true;
   return false;
 }
 
 router.get("/register",
   async (req, res, next) => {
-    if (req.session.passport && (await Registered(req.session.passport.user))) next();
+    if (req.session.passport && (await Exists(req.session.passport.user))) next();
     else res.sendFile(path.join(__dirname, "../pages/form.html"));
   },
   async (req, res, next) => {
@@ -67,7 +73,7 @@ router.post("/register",
 
 router.get("/login",
   async (req, res, next) => {
-    if (req.session.passport && (await Registered(req.session.passport.user))) next();
+    if (req.session.passport && (await Exists(req.session.passport.user))) next();
     else res.sendFile(path.join(__dirname, "../pages/login.html"));
   },
   async (req, res, next) => {
@@ -81,14 +87,14 @@ router.get("/login",
 
 router.get("/dashboard",
   async (req, res, next) => {
-    if (req.session.passport && (await Registered(req.session.passport.user))) next();
+    if (req.session.passport && (await Exists(req.session.passport.user))) next();
     else res.redirect("/login");
   }, 
   async (req, res, next) => {
     if (await Registered(req.session.passport.user)) next();
     else{
       await User.deleteOne({_id:req.session.passport.user});
-      res.redirect("/unauthenticated");
+      res.redirect("/unauthenticated"); 
     } 
   },
   async (req, res, next) => {
@@ -99,7 +105,7 @@ router.get("/dashboard",
 
 router.get("/dashboard/leaderboard",
   async (req, res, next) => {
-    if (req.session.passport && (await Registered(req.session.passport.user))) next();
+    if (req.session.passport && (await Exists(req.session.passport.user))) next();
     else res.redirect("/login");
   },
   async (req, res, next) => {
@@ -160,25 +166,28 @@ router.post("/eventRegistration",
 
 // // ************************ PROJECT RELATED ROUTES *********************************
 
+
 router.get("/projects", async (req, res, next) => {
   const projects = await Project.find();
   res.render("project", {project : projects});
 });
 
-router.post("/register-project",
-  async (req, res, next) => {
-    await ProjectHandler.addProject(req.body);
-  }, (req, res) => {
-    res.send("Done");
-  }
-);
+// NOT NEEDEN IN IWOC 2.0 AS THIS TIME WE HAVE CONTACTED THEM PERSONALLY AND ADDED THEM USING PROJECT TRACKER SCRIPT
 
-// OR
+// router.post("/register-project",
+//   async (req, res, next) => {
+//     await ProjectHandler.addProject(req.body);
+//   }, (req, res) => {
+//     res.send("Done");
+//   }
+// );
 
-router.get("/submit-project", (req, res) => {
-    res.redirect("https://forms.gle/zhrY8EvbFZCty1tw9");
-  }
-);
+// // OR
+
+// router.get("/submit-project", (req, res) => {
+//     res.redirect("https://forms.gle/zhrY8EvbFZCty1tw9");
+//   }
+// );
 
 // // ************************ ---------------------- *********************************
 
@@ -189,16 +198,24 @@ router.get("/auth/github", (req, res, next) => next(),
   passport.authenticate("github", { scope: ["user:email"] })
 );
 
-router.get("/auth/github/callback",
-  passport.authenticate("github", { failureRedirect: "/login" }),
-  async function (req, res) {
-    const user = await User.findById(req.session.passport.user);
-    const d = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
-    user.sessions.push({ sessionid: req.sessionID, date: d });
-    await user.save();
-    res.redirect("/dashboard");
-  }
-);
+router.get('/auth/github/callback',
+  (req, res, next) => {
+    passport.authenticate('github', { failureRedirect: '/login' })(req, res, (err) => {
+      if (err) {
+        // Log the failure reason
+        return res.redirect('/failure?reason=' + encodeURIComponent(err.message));
+      }
+      // Successful authentication logic
+      async function success() {
+            const user = await User.findById(req.session.passport.user);
+            const d = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
+            user.sessions.push({ sessionid: req.sessionID, date: d });
+            await user.save();
+            res.redirect("/dashboard");
+          }
+      success();
+    });
+  });
 
 // // ***********************----------------------------***************************************
 

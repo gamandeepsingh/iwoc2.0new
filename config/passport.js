@@ -14,7 +14,7 @@ const Admin = require('../config/admin');
 const oauth = {
     clientID: process.env.GIT_CLIENT_ID,
     clientSecret: process.env.GIT_CLIENT_SECRET,
-    callbackURL: "/auth/github/callback"
+    callbackURL: process.env.BASE_URL + "/auth/github/callback"
 }
 
 const gitVerifyCallback = async (accessToken, refreshToken, profile, done) => {
