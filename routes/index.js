@@ -174,7 +174,12 @@ router.get("/", (req, res) => {
 // );
 
 // // OR
+// // OR
 
+// router.get("/submit-project", (req, res) => {
+//     res.redirect("https://forms.gle/zhrY8EvbFZCty1tw9");
+//   }
+// );
 // router.get("/submit-project", (req, res) => {
 //     res.redirect("https://forms.gle/zhrY8EvbFZCty1tw9");
 //   }
