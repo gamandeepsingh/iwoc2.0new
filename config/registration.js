@@ -60,6 +60,7 @@ const enterUser = async (data) => {
 const addUser = async (data) => {
     data = data.split(",")
     resp = { status: 200, id: 5, title: "❌Error", message: "Try contacting team." };
+    if(data.length === 1) return resp;
     const userGitProfile = data[1].split("/")[3];
     await fetchProfile(userGitProfile);
     const userGit = await User.findOne({ username: profile.data.login });
