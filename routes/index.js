@@ -44,32 +44,32 @@ const Exists = async (id) => {
   return false;
 }
 
-router.get("/register",
-  async (req, res, next) => {
-    if (req.session.passport && (await Exists(req.session.passport.user))) next();
-    else res.sendFile(path.join(__dirname, "../pages/form.html"));
-  },
-  async (req, res, next) => {
-    if (await Registered(req.session.passport.user)) res.redirect("/dashboard");
-    else next();
-  },
-  (req, res, next) => {
-    res.sendFile(path.join(__dirname, "../pages/form.html"));
-  }
-);
+// router.get("/register",
+//   async (req, res, next) => {
+//     if (req.session.passport && (await Exists(req.session.passport.user))) next();
+//     else res.sendFile(path.join(__dirname, "../pages/form.html"));
+//   },
+//   async (req, res, next) => {
+//     if (await Registered(req.session.passport.user)) res.redirect("/dashboard");
+//     else next();
+//   },
+//   (req, res, next) => {
+//     res.sendFile(path.join(__dirname, "../pages/form.html"));
+//   }
+// );
 
-router.post("/register",
-  async (req, res) => {
-    if(validateData(req.body)){
-      const resp = await UserHandler.addUser(req.body);
-      res.send(JSON.stringify(resp));
-    }
-    else{
-      const resp = {message: "Invalid Data"};
-      res.send(JSON.stringify(resp));
-    } 
-  }
-);
+// router.post("/register",
+//   async (req, res) => {
+//     if(validateData(req.body)){
+//       const resp = await UserHandler.addUser(req.body);
+//       res.send(JSON.stringify(resp));
+//     }
+//     else{
+//       const resp = {message: "Invalid Data"};
+//       res.send(JSON.stringify(resp));
+//     } 
+//   }
+// );
 
 router.get("/login",
   async (req, res, next) => {
@@ -144,35 +144,32 @@ router.get("/unauthenticated", async (req, res, next) => {
 
 // // ************************ EVENT ROUTES *******************************************
 
-router.get("/eventRegistration", (req, res) => {
-  res.sendFile(path.join(__dirname, "../pages/event_registration.html"));
-});
+// router.get("/eventRegistration", (req, res) => {
+//   res.sendFile(path.join(__dirname, "../pages/event_registration.html"));
+// });
 
-router.post("/eventRegistration",
-  async (req, res) => {
-    if(validateData(req.body)){
-      const resp = await UserHandler.addUserEvent(req.body);
-      res.send(JSON.stringify(resp));
-    }
-    else{
-      const resp = {message: "Invalid Data"};
-      res.send(JSON.stringify(resp));
-    } 
-  }
-);
+// router.post("/eventRegistration",
+//   async (req, res) => {
+//     if(validateData(req.body)){
+//       const resp = await UserHandler.addUserEvent(req.body);
+//       res.send(JSON.stringify(resp));
+//     }
+//     else{
+//       const resp = {message: "Invalid Data"};
+//       res.send(JSON.stringify(resp));
+//     } 
+//   }
+// );
 
 // // ************************ -------------------------- *****************************
 
 
 // // ************************ PROJECT RELATED ROUTES *********************************
 
-
 router.get("/projects", async (req, res, next) => {
   const projects = await Project.find();
   res.render("project", {project : projects});
 });
-
-// NOT NEEDEN IN IWOC 2.0 AS THIS TIME WE HAVE CONTACTED THEM PERSONALLY AND ADDED THEM USING PROJECT TRACKER SCRIPT
 
 // router.post("/register-project",
 //   async (req, res, next) => {
@@ -183,7 +180,12 @@ router.get("/projects", async (req, res, next) => {
 // );
 
 // // OR
+// // OR
 
+// router.get("/submit-project", (req, res) => {
+//     res.redirect("https://forms.gle/zhrY8EvbFZCty1tw9");
+//   }
+// );
 // router.get("/submit-project", (req, res) => {
 //     res.redirect("https://forms.gle/zhrY8EvbFZCty1tw9");
 //   }
@@ -222,32 +224,32 @@ router.get('/auth/github/callback',
 
 // // *********************** ADMIN ROUTES *****************************************************
 
-async function adminExists(adminid) {
-  const admin = await Admin.findById(adminid);
-  return admin !== null;
-}
+// async function adminExists(adminid) {
+//   const admin = await Admin.findById(adminid);
+//   return admin !== null;
+// }
 
-router.get("/admin-register",
-  async (req, res, next) => {
-    if (req.session.passport && (await adminExists(req.session.passport.user))) res.redirect("/dashboard");
-    else next();
-  },
-  (req, res, next) => {
-    res.sendFile(path.join(__dirname, "../pages/admin-register.html"));
-  }
-);
+// router.get("/admin-register",
+//   async (req, res, next) => {
+//     if (req.session.passport && (await adminExists(req.session.passport.user))) res.redirect("/dashboard");
+//     else next();
+//   },
+//   (req, res, next) => {
+//     res.sendFile(path.join(__dirname, "../pages/admin-register.html"));
+//   }
+// );
 
-router.post("/admin-register", (req, res, next) => {
-  const newAdmin = new Admin({
-    adminname: req.body.name,
-    email: req.body.email,
-    sessionid: req.sessionID,
-    hash: req.body.password,
-    role: req.body.role,
-  });
-  newAdmin.save()
-  res.redirect("/admin");
-});
+// router.post("/admin-register", (req, res, next) => {
+//   const newAdmin = new Admin({
+//     adminname: req.body.name,
+//     email: req.body.email,
+//     sessionid: req.sessionID,
+//     hash: req.body.password,
+//     role: req.body.role,
+//   });
+//   newAdmin.save()
+//   res.redirect("/admin");
+// });
 
 // **********************************************-------------------------------------------************************
 
