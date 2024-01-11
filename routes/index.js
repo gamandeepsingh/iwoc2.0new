@@ -196,20 +196,28 @@ router.get("/projects", async (req, res, next) => {
 
 // // ********'Github Oauth' routes for PassportJS github strategy and verification callbacks.*************
 
-// router.get("/auth/github", (req, res, next) => next(),
-//   passport.authenticate("github", { scope: ["user:email"] })
-// );
+router.get("/auth/github", (req, res, next) => next(),
+  passport.authenticate("github", { scope: ["user:email"] })
+);
 
-// router.get("/auth/github/callback",
-//   passport.authenticate("github", { failureRedirect: "/login" }),
-//   async function (req, res) {
-//     const user = await User.findById(req.session.passport.user);
-//     const d = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
-//     user.sessions.push({ sessionid: req.sessionID, date: d });
-//     await user.save();
-//     res.redirect("/dashboard");
-//   }
-// );
+router.get('/auth/github/callback',
+  (req, res, next) => {
+    passport.authenticate('github', { failureRedirect: '/login' })(req, res, (err) => {
+      if (err) {
+        // Log the failure reason
+        return res.redirect('/failure?reason=' + encodeURIComponent(err.message));
+      }
+      // Successful authentication logic
+      async function success() {
+            const user = await User.findById(req.session.passport.user);
+            const d = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
+            user.sessions.push({ sessionid: req.sessionID, date: d });
+            await user.save();
+            res.redirect("/dashboard");
+          }
+      success();
+    });
+  });
 
 // // ***********************----------------------------***************************************
 
