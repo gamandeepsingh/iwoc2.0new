@@ -32,15 +32,21 @@ router.get("/", (req, res) => {
 
 // ********************* USER RELATED ROUTES ************************************
 
-// const Registered = async (id) => {
-//   const user = await User.findById(id);
-//   if (user.libid) return true;
-//   return false;
-// }
+const Registered = async (id) => {
+  const user = await User.findById(id);
+  if (user.email) return true;
+  return false;
+}
+
+const Exists = async (id) => {
+  const user = await User.findById(id);
+  if (user !== null) return true;
+  return false;
+}
 
 // router.get("/register",
 //   async (req, res, next) => {
-//     if (req.session.passport && (await Registered(req.session.passport.user))) next();
+//     if (req.session.passport && (await Exists(req.session.passport.user))) next();
 //     else res.sendFile(path.join(__dirname, "../pages/form.html"));
 //   },
 //   async (req, res, next) => {
@@ -65,73 +71,73 @@ router.get("/", (req, res) => {
 //   }
 // );
 
-// router.get("/login",
-//   async (req, res, next) => {
-//     if (req.session.passport && (await Registered(req.session.passport.user))) next();
-//     else res.sendFile(path.join(__dirname, "../pages/login.html"));
-//   },
-//   async (req, res, next) => {
-//     if (await Registered(req.session.passport.user)) res.redirect("/dashboard");
-//     else next();
-//   },
-//   (req, res, next) => {
-//     res.sendFile(path.join(__dirname, "../pages/login.html"));
-//   }
-// );
+router.get("/login",
+  async (req, res, next) => {
+    if (req.session.passport && (await Exists(req.session.passport.user))) next();
+    else res.sendFile(path.join(__dirname, "../pages/login.html"));
+  },
+  async (req, res, next) => {
+    if (await Registered(req.session.passport.user)) res.redirect("/dashboard");
+    else next();
+  },
+  (req, res, next) => {
+    res.sendFile(path.join(__dirname, "../pages/login.html"));
+  }
+);
 
-// router.get("/dashboard",
-//   async (req, res, next) => {
-//     if (req.session.passport && (await Registered(req.session.passport.user))) next();
-//     else res.redirect("/login");
-//   }, 
-//   async (req, res, next) => {
-//     if (await Registered(req.session.passport.user)) next();
-//     else{
-//       await User.deleteOne({_id:req.session.passport.user});
-//       res.redirect("/unauthenticated");
-//     } 
-//   },
-//   async (req, res, next) => {
-//     const user = await User.findById(req.session.passport.user);
-//     res.render("dashboard", { user: user });
-//   }
-// );
+router.get("/dashboard",
+  async (req, res, next) => {
+    if (req.session.passport && (await Exists(req.session.passport.user))) next();
+    else res.redirect("/login");
+  }, 
+  async (req, res, next) => {
+    if (await Registered(req.session.passport.user)) next();
+    else{
+      await User.deleteOne({_id:req.session.passport.user});
+      res.redirect("/unauthenticated"); 
+    } 
+  },
+  async (req, res, next) => {
+    const user = await User.findById(req.session.passport.user);
+    res.render("dashboard", { user: user });
+  }
+);
 
-// router.get("/dashboard/leaderboard",
-//   async (req, res, next) => {
-//     if (req.session.passport && (await Registered(req.session.passport.user))) next();
-//     else res.redirect("/login");
-//   },
-//   async (req, res, next) => {
-//     if (await Registered(req.session.passport.user)) next();
-//     else{
-//       await User.deleteOne({_id:req.session.passport.user});
-//       res.redirect("/unauthenticated");
-//     } 
-//   },
-//   async (req, res, next) => {
-//     const user_t = await User.findById(req.session.passport.user);
-//     const users = await User.find();
-//     await users.sort(function(a, b){return b.score - a.score});
-//     const rank = users.map(e => e.username).indexOf(user_t.username) + 1;
-//     if(req.query.user){
-//       const user = await User.findOne({username:req.query.user});
-//       res.render("history", { user_t:user_t,user: user,rank:rank });
-//     }
-//     else res.render("leaderboard", { user: user_t,users: users, rank:rank});
-//   }
-// );
+router.get("/dashboard/leaderboard",
+  async (req, res, next) => {
+    if (req.session.passport && (await Exists(req.session.passport.user))) next();
+    else res.redirect("/login");
+  },
+  async (req, res, next) => {
+    if (await Registered(req.session.passport.user)) next();
+    else{
+      await User.deleteOne({_id:req.session.passport.user});
+      res.redirect("/unauthenticated");
+    } 
+  },
+  async (req, res, next) => {
+    const user_t = await User.findById(req.session.passport.user);
+    const users = await User.find();
+    await users.sort(function(a, b){return b.score - a.score});
+    const rank = users.map(e => e.username).indexOf(user_t.username) + 1;
+    if(req.query.user){
+      const user = await User.findOne({username:req.query.user});
+      res.render("history", { user_t:user_t,user: user,rank:rank });
+    }
+    else res.render("leaderboard", { user: user_t,users: users, rank:rank});
+  }
+);
 
-// router.get("/logout", (req, res, next) => {
-//   req.logout((err) => {
-//     if (err) return next(err);
-//     res.redirect("/");
-//   });
-// });
+router.get("/logout", (req, res, next) => {
+  req.logout((err) => {
+    if (err) return next(err);
+    res.redirect("/");
+  });
+});
 
-// router.get("/unauthenticated", async (req, res, next) => {
-//   res.sendFile(path.join(__dirname, "../pages/unauthenticated.html"));
-// });
+router.get("/unauthenticated", async (req, res, next) => {
+  res.sendFile(path.join(__dirname, "../pages/unauthenticated.html"));
+});
 
 // // ************************ --------------------- *********************************
 
@@ -160,10 +166,10 @@ router.get("/", (req, res) => {
 
 // // ************************ PROJECT RELATED ROUTES *********************************
 
-// router.get("/projects", async (req, res, next) => {
-//   const projects = await Project.find();
-//   res.render("project", {project : projects});
-// });
+router.get("/projects", async (req, res, next) => {
+  const projects = await Project.find();
+  res.render("project", {project : projects});
+});
 
 // router.post("/register-project",
 //   async (req, res, next) => {
