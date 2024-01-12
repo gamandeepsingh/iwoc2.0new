@@ -1434,6 +1434,7 @@ body {
 .table-hover.table-mc-light-blue>tbody>tr:hover>td,
 .table-hover.table-mc-light-blue>tbody>tr:hover>th {
   background-color: #b3e5fc;
+  border-radius: 20px;
 }
 
 @media screen and (max-width: 767px) {

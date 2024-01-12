@@ -61,9 +61,21 @@
                 <strong><%= project[i].projectName %></strong>&nbsp; &nbsp;<i class="fa fa-github" style="font-size:30px;color:white"
                     onclick="window.href.location='<%= project[i].repoUrl %>'"></i>
               </h3>
-              <p class="mt-2 font-sans font-light text-white">
+              <!-- <p class="mt-2 font-sans font-light text-white">
                 <%= project[i].description %>&nbsp;
+              </p> -->
+              <p class="mt-2 font-sans font-light text-white">
+                <% 
+                  const description = project[i].description;
+                  const words = description.split(' ');
+                  const newWord = words.slice(0, 15).join(' ');
+            
+                  const dots = words.length > 15;
+              
+                  %>
+                <%= newWord %><%= dots ? '...' : '' %>&nbsp;
               </p>
+              
             </div>
             <div class="pb-3 text-white techstack" style="position: absolute; bottom: 2rem;">
               <% for(var j=0; j < project[i].language.length; j++) { %>
